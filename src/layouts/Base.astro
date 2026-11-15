@@ -1,0 +1,39 @@
+---
+import '@fontsource-variable/plus-jakarta-sans';
+import '../styles/global.css';
+import type { Lang } from '../i18n/ui';
+import { useTranslations, languages, homePath } from '../i18n/ui';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<!doctype html>
+<html lang={languages[lang].htmlLang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{t('meta.title')}</title>
+    <meta name="description" content={t('meta.description')} />
+    <meta name="theme-color" content="#0a0a0a" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={t('meta.title')} />
+    <meta property="og:description" content={t('meta.description')} />
+    <meta property="og:locale" content={languages[lang].locale.replace('-', '_')} />
+    {(Object.keys(languages) as Lang[]).map((l) => <link rel="alternate" hreflang={languages[l].htmlLang} href={homePath(l)} />)}
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <script is:inline>
+      // Tema escuro por padrão; a escolha do visitante fica salva neste navegador.
+      try { if (localStorage.getItem('theme') === 'light') document.documentElement.dataset.theme = 'light'; } catch (e) {}
+      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('js-motion');
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#conteudo">{t('skip')}</a>
+    <slot />
+    <script>
+      import '../scripts/motion';
+    </script>
+  </body>
+</html>

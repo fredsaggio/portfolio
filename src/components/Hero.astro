@@ -1,0 +1,171 @@
+---
+import { Picture } from 'astro:assets';
+import photo from '../assets/fred.jpg';
+import Icon from './Icon.astro';
+import type { Lang } from '../i18n/ui';
+import { useTranslations, getProfile } from '../i18n/ui';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const p = getProfile(lang);
+const [first, ...rest] = p.name.split(' ');
+
+const facts = [
+  { label: t('hero.fact.now'), value: p.status, live: true },
+  { label: t('hero.fact.focus'), value: p.focus },
+  { label: t('hero.fact.base'), value: p.location },
+];
+---
+
+<section class="hero shell" id="inicio">
+  <div class="grid">
+    <div class="copy">
+      <p class="prompt" data-reveal style="--i:1" aria-hidden="true">
+        <span class="path">~/{p.logo}</span><span class="sign">$</span><span class="cmd" data-type={t('hero.prompt')}>{t('hero.prompt')}</span><span class="caret"></span>
+      </p>
+
+      <h1 class="name" data-reveal style="--i:2">
+        <span>{first}</span>
+        <span class="last">{rest.join(' ')}</span>
+      </h1>
+
+      <p class="title" data-reveal style="--i:3"><span class="rule" aria-hidden="true"></span>{p.title}</p>
+
+      <p class="intro" data-reveal style="--i:4">{p.intro}</p>
+
+      <ul class="stack" data-reveal style="--i:5">
+        {p.heroStack.map((s) => <li>{s}</li>)}
+      </ul>
+
+      <div class="ctas" data-reveal style="--i:6">
+        <a class="btn btn-accent" href="#projetos">{t('hero.cta.primary')}<Icon name="arrow-down" class="down" /></a>
+        <a class="text-link" href="#contato">{t('hero.cta.contact')}<Icon name="arrow-up-right" /></a>
+      </div>
+    </div>
+
+    <figure class="portrait" data-reveal style="--i:3">
+      <span class="frame" aria-hidden="true"></span>
+      <div class="photo">
+        <Picture
+          src={photo}
+          formats={['avif', 'webp']}
+          widths={[400, 600, 800, 1000, 1200]}
+          quality={85}
+          sizes="(min-width: 1024px) 384px, (min-width: 640px) 384px, 90vw"
+          alt={t('hero.photoAlt')}
+          loading="eager"
+          fetchpriority="high"
+        />
+      </div>
+      <figcaption class="note">
+        <Icon name="arrow-up-right" size={20} />
+        <span>{p.photoNote}</span>
+      </figcaption>
+    </figure>
+  </div>
+
+  <dl class="facts" data-reveal style="--i:4">
+    {facts.map((f) => (
+      <div class="fact">
+        <dt>{f.live && <span class="dot" aria-hidden="true"></span>}{f.label}</dt>
+        <dd>{f.value}</dd>
+      </div>
+    ))}
+  </dl>
+</section>
+
+<style>
+  .hero { padding-top: clamp(128px, 15vw, 176px); padding-bottom: clamp(48px, 7vw, 80px); }
+
+  .grid { display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(0, 0.75fr); gap: clamp(40px, 6vw, 64px); align-items: center; }
+  .copy { min-width: 0; }
+
+  /* linha de terminal no lugar do "olá" */
+  .prompt {
+    display: inline-flex; align-items: center; gap: 10px; margin-bottom: 28px; padding: 8px 14px; border-radius: 8px;
+    font: 500 13px / 1 ui-monospace, 'SFMono-Regular', 'JetBrains Mono', Menlo, monospace;
+    background: var(--surface); border: 1px solid var(--border); color: var(--text);
+  }
+  .path { color: var(--muted); }
+  .sign { color: var(--accent-text); }
+  .caret { width: 8px; height: 15px; background: var(--accent-text); animation: blink 1.1s steps(1) infinite; margin-left: -6px; }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  .name { display: grid; font-size: clamp(3rem, 1.2rem + 6.6vw, 6.6rem); font-weight: 500; line-height: 0.95; letter-spacing: -0.065em; }
+  .last { padding-left: clamp(0px, 6vw, 96px); color: transparent; -webkit-text-stroke: 1.5px var(--text); }
+  /* no tema claro o contorno fica fraco: o sobrenome vem preenchido */
+  :global(:root[data-theme='light']) .last { color: var(--text); -webkit-text-stroke: 0; }
+
+  .title { display: flex; align-items: center; gap: 16px; margin-top: 32px; font-size: clamp(18px, 1rem + 0.6vw, 24px); font-weight: 500; letter-spacing: -0.02em; }
+  .rule { width: 40px; height: 2px; background: var(--accent-text); flex: none; }
+  .intro { margin-top: 20px; max-width: 36rem; font-size: clamp(16px, 0.9rem + 0.3vw, 18px); line-height: 1.8; color: var(--muted); }
+
+  .stack { list-style: none; padding: 0; margin-top: 24px; display: flex; flex-wrap: wrap; gap: 8px; }
+  .stack li {
+    display: inline-flex; align-items: center; gap: 8px; padding: 7px 12px; border-radius: 6px;
+    font-size: 13px; font-weight: 500; background: var(--surface-2); border: 1px solid var(--border);
+  }
+  .stack li::before { content: ''; width: 6px; height: 6px; border-radius: 2px; background: var(--accent-text); }
+
+  .ctas { margin-top: 36px; display: flex; flex-wrap: wrap; align-items: center; gap: 24px; }
+
+  .portrait { position: relative; width: 100%; max-width: 384px; margin: 16px auto 0; }
+  .photo { position: relative; aspect-ratio: 4 / 5; overflow: hidden; border-radius: 24px; background: var(--surface-2); }
+  /* moldura no acento, deslocada para trás da foto */
+  .frame {
+    position: absolute; top: 0; left: 0; width: 100%; aspect-ratio: 4 / 5; border-radius: 24px;
+    border: 1px solid var(--accent-text); transform: translate(-16px, -16px); transition: transform 0.8s var(--ease);
+    background-image: radial-gradient(rgb(var(--accent-rgb) / 0.35) 1px, transparent 1.5px); background-size: 14px 14px;
+  }
+  .portrait:hover .frame { transform: translate(-10px, -10px); }
+  .photo :global(img) { width: 100%; height: 100%; object-fit: cover; object-position: center 20%; transition: transform 1.2s var(--ease); }
+  .portrait:hover .photo :global(img) { transform: scale(1.02); }
+  .note {
+    position: relative; margin: -36px 0 0 auto; margin-right: -20px; max-width: 80%; width: fit-content; padding: 20px; display: grid; gap: 14px;
+    border: 1px solid var(--border-strong); background: var(--bg); font-size: 14px; line-height: 1.6;
+  }
+  .note :global(svg) { color: var(--accent-text); }
+
+  /* faixa de informações no rodapé da hero */
+  .facts {
+    margin: clamp(56px, 7vw, 88px) 0 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+    border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+  }
+  .fact { display: grid; gap: 6px; padding: 22px 24px; min-width: 0; }
+  .fact + .fact { border-left: 1px solid var(--border); }
+  .fact:first-child { padding-left: 0; }
+  dt { display: inline-flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--subtle); }
+  dd { margin: 0; font-size: 15px; font-weight: 500; }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent-text); box-shadow: 0 0 0 0 rgb(var(--accent-rgb) / 0.6); animation: pulse 2.4s infinite; }
+  @keyframes pulse { 70%, 100% { box-shadow: 0 0 0 7px rgb(var(--accent-rgb) / 0); } }
+
+  @media (max-width: 1023px) {
+    .grid { grid-template-columns: 1fr; }
+    .portrait { margin-top: 8px; }
+  }
+  @media (max-width: 700px) {
+    .facts { grid-template-columns: 1fr; }
+    .fact { padding: 16px 0; }
+    .fact + .fact { border-left: 0; border-top: 1px solid var(--border); }
+  }
+  @media (max-width: 560px) {
+    .note { margin-right: 12px; }
+    .frame { transform: translate(-10px, -10px); }
+    .last { -webkit-text-stroke-width: 1px; }
+  }
+</style>
+
+<script>
+  // Digita o comando da linha de terminal ao carregar
+  const cmd = document.querySelector<HTMLElement>('.prompt .cmd');
+  if (cmd && document.documentElement.classList.contains('js-motion')) {
+    const text = cmd.dataset.type || '';
+    cmd.textContent = '';
+    let i = 0;
+    setTimeout(function type() {
+      cmd.textContent = text.slice(0, ++i);
+      if (i < text.length) setTimeout(type, 90);
+    }, 500);
+  }
+</script>

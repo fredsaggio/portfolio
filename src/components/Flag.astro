@@ -1,0 +1,43 @@
+---
+/** Bandeiras redondas simplificadas, desenhadas em SVG (sem imagens externas). */
+import type { Lang } from '../i18n/ui';
+interface Props { lang: Lang; size?: number }
+const { lang, size = 18 } = Astro.props;
+const id = `flag-${lang}-${Math.random().toString(36).slice(2, 8)}`;
+---
+
+<svg class="flag" width={size} height={size} viewBox="0 0 24 24" aria-hidden="true">
+  <defs><clipPath id={id}><circle cx="12" cy="12" r="12" /></clipPath></defs>
+  <g clip-path={`url(#${id})`}>
+    {lang === 'pt' && (
+      <>
+        <rect width="24" height="24" fill="#009c3b" />
+        <polygon points="12,3.5 21.5,12 12,20.5 2.5,12" fill="#ffdf00" />
+        <circle cx="12" cy="12" r="4.6" fill="#002776" />
+        <path d="M7.6 11.2c2.9-.6 6.1-.2 8.7 1.2" stroke="#fff" stroke-width="0.9" fill="none" />
+      </>
+    )}
+    {lang === 'en' && (
+      <>
+        <rect width="24" height="24" fill="#fff" />
+        {[0, 2, 4, 6, 8, 10, 12].map((i) => <rect y={i * 1.85} width="24" height="1.85" fill="#b22234" />)}
+        <rect width="11" height="12.95" fill="#3c3b6e" />
+        {[[2.5, 2.5], [5.5, 2.5], [8.5, 2.5], [4, 5.2], [7, 5.2], [2.5, 7.9], [5.5, 7.9], [8.5, 7.9], [4, 10.6], [7, 10.6]].map(([x, y]) => (
+          <circle cx={x} cy={y} r="0.6" fill="#fff" />
+        ))}
+      </>
+    )}
+    {lang === 'it' && (
+      <>
+        <rect width="8" height="24" fill="#009246" />
+        <rect x="8" width="8" height="24" fill="#fff" />
+        <rect x="16" width="8" height="24" fill="#ce2b37" />
+      </>
+    )}
+  </g>
+  <circle cx="12" cy="12" r="11.5" fill="none" stroke="rgb(255 255 255 / 0.15)" />
+</svg>
+
+<style>
+  .flag { flex: none; border-radius: 50%; }
+</style>

@@ -1,0 +1,49 @@
+---
+import Icon from './Icon.astro';
+import type { Lang } from '../i18n/ui';
+import { useTranslations, getProfile } from '../i18n/ui';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const p = getProfile(lang);
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="shell row">
+    <a class="logo" href="#inicio"><span class="br" aria-hidden="true">&lt;&gt;</span>{p.logo}</a>
+    <p>© {year} {p.name}. {t('footer.rights')}</p>
+  </div>
+</footer>
+
+<a class="to-top" href="#inicio" aria-label={t('top')}><Icon name="arrow-up" size={18} /></a>
+
+<style>
+  .footer { border-top: 1px solid var(--border); padding-block: 28px calc(28px + env(safe-area-inset-bottom, 0px)); }
+  .row { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; }
+  .logo { display: inline-flex; align-items: center; gap: 6px; font-size: 18px; font-weight: 600; letter-spacing: -0.04em; text-decoration: none; }
+  .br { color: var(--accent-text); font-weight: 700; letter-spacing: 0.02em; }
+  .row p { font-size: 12px; color: var(--subtle); }
+  @media (max-width: 640px) { .row { padding-right: 72px; } }
+
+  .to-top {
+    position: fixed; z-index: 40;
+    right: max(20px, env(safe-area-inset-right, 0px)); bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+    display: grid; place-items: center; width: 48px; height: 48px; border-radius: 50%;
+    border: 1px solid color-mix(in srgb, var(--accent-text) 55%, transparent); color: var(--accent-text);
+    background: color-mix(in srgb, var(--bg) 85%, transparent); backdrop-filter: blur(8px);
+    opacity: 0; transform: translateY(12px); pointer-events: none; transition: opacity 0.3s, transform 0.4s var(--ease), background-color 0.2s;
+  }
+  .to-top.is-visible { opacity: 1; transform: none; pointer-events: auto; }
+  .to-top:hover { background: var(--accent); color: var(--on-accent); }
+</style>
+
+<script>
+  const btn = document.querySelector<HTMLElement>('.to-top');
+  if (btn) {
+    const update = () => btn.classList.toggle('is-visible', window.scrollY > window.innerHeight * 0.8);
+    addEventListener('scroll', update, { passive: true });
+    update();
+  }
+</script>

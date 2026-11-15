@@ -1,0 +1,63 @@
+---
+import type { Lang } from '../i18n/ui';
+import { useTranslations, getProfile } from '../i18n/ui';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const p = getProfile(lang);
+---
+
+<section class="section shell" id="skills" aria-labelledby="skills-title">
+  <div class="section-head" data-reveal>
+    <p class="eyebrow">{t('skills.eyebrow')}</p>
+    <h2 class="section-title" id="skills-title">{t('skills.title')}</h2>
+    <p class="section-sub">{t('skills.sub')}</p>
+  </div>
+
+  <ul class="groups">
+    {p.skillGroups.map((g, i) => (
+      <li class="group" data-reveal style={`--i:${i % 3}`}>
+        <div class="head">
+          <span class="n" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+          <h3>{g.title}</h3>
+        </div>
+        <p class="text">{g.text}</p>
+        <ul class="tags">{g.items.map((s) => <li class="tag">{s}</li>)}</ul>
+      </li>
+    ))}
+  </ul>
+
+  <div class="langs" data-reveal>
+    <h3>{t('skills.languages')}</h3>
+    <ul>
+      {p.languages.map((l) => <li><span>{l.name}</span><span class="lvl">{l.level}</span></li>)}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .groups { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+  .group {
+    display: grid; grid-template-rows: auto 1fr auto; gap: 16px; padding: 28px 24px; min-width: 0;
+    border: 1px solid var(--border); border-radius: 12px; background: var(--surface);
+    transition: border-color 0.3s, background-color 0.3s;
+  }
+  .group:hover { border-color: var(--border-strong); background: var(--surface-2); }
+  .head { display: flex; align-items: baseline; gap: 14px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
+  .n { font-size: 12px; font-weight: 600; color: var(--accent-text); }
+  h3 { font-size: 20px; font-weight: 500; letter-spacing: -0.02em; }
+  .text { font-size: 14px; line-height: 1.75; color: var(--muted); }
+
+  .langs {
+    margin-top: 12px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px 32px;
+    padding: 20px 24px; border: 1px solid var(--border); border-radius: 12px; background: var(--surface);
+  }
+  .langs h3 { font-size: 11px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent-text); }
+  .langs ul { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 8px 28px; }
+  .langs li { display: inline-flex; gap: 8px; font-size: 15px; font-weight: 500; }
+  .lvl { color: var(--muted); font-weight: 400; }
+
+  @media (max-width: 960px) { .groups { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 600px) { .groups { grid-template-columns: 1fr; } }
+</style>

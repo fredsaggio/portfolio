@@ -1,0 +1,81 @@
+---
+import Flag from './Flag.astro';
+import Icon from './Icon.astro';
+import type { Lang } from '../i18n/ui';
+import { languages, homePath, useTranslations } from '../i18n/ui';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const all = Object.keys(languages) as Lang[];
+---
+
+<div class="lang">
+  <button class="lang-btn" type="button" aria-haspopup="true" aria-expanded="false" aria-label={`${t('lang.label')}: ${languages[lang].label}`}>
+    <Flag lang={lang} />
+    <span class="short">{languages[lang].short}</span>
+    <Icon name="chevron-down" size={14} class="chev" />
+  </button>
+  <ul class="lang-menu" hidden>
+    {all.map((l) => (
+      <li>
+        <a href={homePath(l)} hreflang={languages[l].htmlLang} lang={languages[l].htmlLang} aria-current={l === lang ? 'true' : undefined} data-lang-link>
+          <Flag lang={l} size={20} />
+          <span>{languages[l].label}</span>
+          {l === lang && <Icon name="check" size={16} class="ok" />}
+        </a>
+      </li>
+    ))}
+  </ul>
+</div>
+
+<style>
+  .lang { position: relative; }
+  .lang-btn {
+    display: inline-flex; align-items: center; gap: 8px; height: 44px; padding: 0 12px 0 10px; border-radius: 999px; cursor: pointer;
+    background: var(--surface-2); border: 1px solid var(--border-strong); color: var(--text); font-size: 14px; font-weight: 500;
+    transition: border-color 0.2s;
+  }
+  .lang-btn:hover, .lang-btn[aria-expanded='true'] { border-color: var(--subtle); }
+  .lang-btn :global(.chev) { color: var(--muted); transition: transform 0.3s var(--ease); }
+  .lang-btn[aria-expanded='true'] :global(.chev) { transform: rotate(180deg); }
+
+  .lang-menu {
+    position: absolute; right: 0; top: calc(100% + 8px); z-index: 60; min-width: 190px; list-style: none; margin: 0; padding: 6px;
+    border: 1px solid var(--border-strong); border-radius: 14px; background: var(--surface);
+    box-shadow: 0 20px 50px -20px rgb(0 0 0 / 0.6);
+    animation: drop 0.25s var(--ease);
+  }
+  @keyframes drop { from { opacity: 0; transform: translateY(-6px); } }
+  .lang-menu a {
+    display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 10px;
+    font-size: 14px; font-weight: 500; text-decoration: none; color: var(--text);
+  }
+  .lang-menu a:hover, .lang-menu a:focus-visible { background: var(--surface-2); }
+  .lang-menu a[aria-current='true'] { color: var(--accent-text); }
+  .lang-menu :global(.ok) { margin-left: auto; }
+
+  @media (max-width: 560px) {
+    .short { display: none; }
+    .lang-btn { padding: 0 10px; gap: 4px; }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.lang').forEach((root) => {
+    const btn = root.querySelector<HTMLButtonElement>('.lang-btn')!;
+    const menu = root.querySelector<HTMLElement>('.lang-menu')!;
+    const set = (open: boolean) => {
+      btn.setAttribute('aria-expanded', String(open));
+      menu.hidden = !open;
+      if (open) menu.querySelector<HTMLElement>('a')?.focus();
+    };
+    btn.addEventListener('click', () => set(menu.hidden));
+    document.addEventListener('click', (e) => { if (!root.contains(e.target as Node)) set(false); });
+    root.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !menu.hidden) { set(false); btn.focus(); } });
+  });
+  // Ao trocar de idioma, continua na mesma seção da página
+  document.querySelectorAll<HTMLAnchorElement>('[data-lang-link]').forEach((a) => {
+    a.addEventListener('click', () => { if (location.hash) a.href = a.pathname + location.hash; });
+  });
+</script>

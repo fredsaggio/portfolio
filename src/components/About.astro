@@ -1,0 +1,131 @@
+---
+import { getCollection } from 'astro:content';
+import { Picture } from 'astro:assets';
+import Icon from './Icon.astro';
+import type { Lang } from '../i18n/ui';
+import { useTranslations, getProfile } from '../i18n/ui';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const p = getProfile(lang);
+
+// Slides da trajetória: um arquivo por item em src/content/journey/<idioma>/
+const slides = (await getCollection('journey', (e) => e.id.startsWith(`${lang}/`)))
+  .sort((a, b) => a.data.order - b.data.order);
+const total = slides.length;
+const pad = (n: number) => String(n).padStart(2, '0');
+---
+
+<section class="section shell" id="sobre" aria-labelledby="about-title">
+  <div class="section-head" data-reveal>
+    <p class="eyebrow">{t('about.eyebrow')}</p>
+    <h2 class="section-title" id="about-title">{t('about.title')}</h2>
+  </div>
+
+  <div class="grid">
+    <div class="text" data-reveal>
+      {p.about.map((para) => <p>{para}</p>)}
+    </div>
+
+    {total > 0 && (
+      <div class="journey" data-journey data-reveal style="--i:1" aria-roledescription="carrossel" aria-label={t('journey.title')}>
+        <div class="j-head">
+          <h3>{t('journey.title')}</h3>
+          <div class="j-nav">
+            <span class="count" aria-hidden="true"><b data-current>01</b> / {pad(total)}</span>
+            <button class="arrow" type="button" data-prev aria-label={t('journey.prev')} disabled={total < 2}><Icon name="arrow-up-right" size={18} class="left" /></button>
+            <button class="arrow" type="button" data-next aria-label={t('journey.next')} disabled={total < 2}><Icon name="arrow-up-right" size={18} class="right" /></button>
+          </div>
+        </div>
+
+        <ol class="slides">
+          {slides.map((s, i) => {
+            const d = s.data;
+            return (
+              <li class="slide" data-slide aria-roledescription="slide" aria-label={`${i + 1} ${t('journey.of')} ${total}`} hidden={i > 0 ? true : undefined}>
+                <figure class="photo">
+                  <Picture src={d.image} formats={['avif', 'webp']} widths={[480, 720, 960, 1280]} sizes="(min-width: 1024px) 680px, 92vw" quality={85} alt={d.imageAlt} loading="lazy" />
+                </figure>
+                <div class="body" aria-live="polite">
+                  <p class="meta">{d.meta}</p>
+                  <h4>{d.title}</h4>
+                  <p class="desc">{d.text}</p>
+                  {d.tags.length > 0 && <ul class="tags">{d.tags.map((tg) => <li class="tag">{tg}</li>)}</ul>}
+                  {d.link && <a class="text-link" href={d.link.url} target="_blank" rel="noopener">{d.link.label}<Icon name="arrow-up-right" /></a>}
+                </div>
+              </li>
+            );
+          })}
+        </ol>
+      </div>
+    )}
+  </div>
+</section>
+
+<style>
+  .grid { display: grid; grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr); gap: clamp(32px, 6vw, 72px); align-items: start; }
+  .text { display: grid; gap: 20px; font-size: clamp(16px, 0.95rem + 0.3vw, 18px); line-height: 1.8; color: var(--muted); }
+  .text p:first-child { color: var(--text); font-size: clamp(18px, 1rem + 0.5vw, 22px); line-height: 1.6; }
+
+  .journey { border: 1px solid var(--border); border-radius: 16px; background: var(--surface); overflow: hidden; min-width: 0; }
+  .j-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 16px 20px; border-bottom: 1px solid var(--border); }
+  .j-head h3 { font-size: 11px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent-text); }
+  .j-nav { display: flex; align-items: center; gap: 10px; }
+  .count { font-size: 13px; color: var(--subtle); font-variant-numeric: tabular-nums; margin-right: 4px; }
+  .count b { color: var(--text); font-weight: 600; }
+  .arrow {
+    display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; cursor: pointer;
+    background: var(--surface-2); border: 1px solid var(--border-strong); color: var(--text);
+    transition: border-color 0.2s, background-color 0.2s, color 0.2s;
+  }
+  .arrow:hover:not(:disabled) { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+  .arrow:disabled { opacity: 0.35; cursor: default; }
+  .arrow :global(.left) { transform: rotate(-135deg); }
+  .arrow :global(.right) { transform: rotate(45deg); }
+
+  .slides { list-style: none; margin: 0; padding: 0; }
+  .slide { display: grid; }
+  .slide.is-entering { animation: slideIn 0.5s var(--ease); }
+  @keyframes slideIn { from { opacity: 0; transform: translateX(var(--dir, 24px)); } }
+  .photo { aspect-ratio: 3 / 2; overflow: hidden; background: var(--surface-2); touch-action: pan-y; }
+  .photo :global(img) { width: 100%; height: 100%; object-fit: cover; }
+  .body { display: grid; gap: 12px; padding: 22px 22px 26px; justify-items: start; }
+  .meta { font-size: 12px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--subtle); }
+  h4 { margin: 0; font-size: clamp(20px, 1.05rem + 0.6vw, 24px); font-weight: 600; letter-spacing: -0.02em; line-height: 1.25; }
+  .desc { color: var(--muted); font-size: 15px; line-height: 1.75; }
+
+  @media (max-width: 960px) { .grid { grid-template-columns: minmax(0, 1fr); } }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-journey]').forEach((root) => {
+    const slides = Array.from(root.querySelectorAll<HTMLElement>('[data-slide]'));
+    const current = root.querySelector<HTMLElement>('[data-current]')!;
+    if (slides.length < 2) return;
+    let i = 0;
+    const show = (next: number, dir: 1 | -1) => {
+      slides[i].hidden = true;
+      i = (next + slides.length) % slides.length;
+      const s = slides[i];
+      s.hidden = false;
+      s.style.setProperty('--dir', `${dir * 24}px`);
+      s.classList.remove('is-entering'); void s.offsetWidth; s.classList.add('is-entering');
+      current.textContent = String(i + 1).padStart(2, '0');
+    };
+    root.querySelector('[data-prev]')?.addEventListener('click', () => show(i - 1, -1));
+    root.querySelector('[data-next]')?.addEventListener('click', () => show(i + 1, 1));
+    root.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') show(i - 1, -1);
+      if (e.key === 'ArrowRight') show(i + 1, 1);
+    });
+    // arrastar no celular
+    let x0: number | null = null;
+    root.addEventListener('pointerdown', (e) => { if ((e.target as HTMLElement).closest('.photo')) x0 = e.clientX; });
+    root.addEventListener('pointerup', (e) => {
+      if (x0 === null) return;
+      const dx = e.clientX - x0; x0 = null;
+      if (Math.abs(dx) > 40) show(i + (dx < 0 ? 1 : -1), dx < 0 ? 1 : -1);
+    });
+  });
+</script>

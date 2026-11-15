@@ -1,0 +1,128 @@
+---
+import { getCollection } from 'astro:content';
+import { Picture } from 'astro:assets';
+import Icon from './Icon.astro';
+import type { Lang, UiKey } from '../i18n/ui';
+import { useTranslations } from '../i18n/ui';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const projects = (await getCollection('projects', (e) => e.id.startsWith(`${lang}/`)))
+  .sort((a, b) => a.data.order - b.data.order || b.data.year - a.data.year);
+const count = `${projects.length} ${projects.length === 1 ? t('proj.count.one') : t('proj.count.many')}`;
+---
+
+<section class="section shell" id="projetos" aria-labelledby="proj-title">
+  <div class="section-head" data-reveal>
+    <p class="eyebrow">{t('proj.eyebrow')}</p>
+    <h2 class="section-title" id="proj-title">{t('proj.title')}</h2>
+    <p class="section-sub">{t('proj.sub')}</p>
+    <p class="section-meta">{count}</p>
+  </div>
+
+  <div class="list">
+    {projects.map((p) => {
+      const d = p.data;
+      return (
+        <article class="project" data-reveal>
+          <div class="stage">
+            <div class="browser">
+              <div class="chrome">
+                <span class="dots"><i></i><i></i><i></i></span>
+                {d.displayUrl && <span class="url">{d.displayUrl}</span>}
+              </div>
+              <Picture src={d.image} formats={['avif', 'webp']} widths={[640, 960, 1280, 1600, 2000]} sizes="(min-width: 960px) 600px, 92vw" quality={90} alt={d.imageAlt} loading="lazy" />
+            </div>
+            {d.mobileImage && (
+              <div class="phone">
+                <Picture src={d.mobileImage} formats={['avif', 'webp']} widths={[240, 360, 480, 640]} sizes="(min-width: 960px) 130px, 26vw" quality={90} alt="" loading="lazy" />
+              </div>
+            )}
+          </div>
+
+          <div class="info">
+            <div class="meta">
+              <span>{d.year}</span>
+              <span class={`status s-${d.status}`}>{t(`proj.status.${d.status}` as UiKey)}</span>
+            </div>
+            <h3>{d.title} <span class="sub">— {d.subtitle}</span></h3>
+            <p class="desc">{d.description}</p>
+            {d.highlights.length > 0 && (
+              <details class="more">
+                <summary>{t('proj.details')}<Icon name="chevron-down" size={14} /></summary>
+                <ul class="points">{d.highlights.map((h) => <li>{h}</li>)}</ul>
+              </details>
+            )}
+            <ul class="tags">{d.stack.map((s) => <li class="tag">{s}</li>)}</ul>
+            <div class="actions">
+              {d.links.site && <a class="btn btn-accent btn-sm" href={d.links.site} target="_blank" rel="noopener"><Icon name="arrow-up-right" size={16} class="diag" />{t('proj.site')}</a>}
+              {d.links.repo && <a class="btn btn-ghost btn-sm" href={d.links.repo} target="_blank" rel="noopener"><Icon name="github" size={16} />{t('proj.repo')}</a>}
+            </div>
+          </div>
+        </article>
+      );
+    })}
+  </div>
+</section>
+
+<style>
+  /* cards lado a lado: imagem menor em cima, texto embaixo */
+  .list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 48px 32px; align-items: start; }
+  .list:has(> :only-child) { grid-template-columns: minmax(0, 1fr); max-width: 720px; }
+  .project { display: grid; gap: 24px; min-width: 0; }
+
+  /* palco com o print do desktop numa janela de navegador e o do celular sobreposto */
+  .stage {
+    position: relative; display: grid; place-items: center; overflow: hidden; aspect-ratio: 16 / 10;
+    padding: clamp(16px, 3vw, 28px) clamp(16px, 4vw, 44px) 0;
+    border: 1px solid var(--border); border-radius: 14px; background: var(--surface);
+    background-image: radial-gradient(70% 60% at 50% 0%, var(--accent-soft), transparent 70%);
+  }
+  .browser {
+    width: 100%; align-self: end; border-radius: 8px 8px 0 0; overflow: hidden;
+    border: 1px solid var(--border-strong); border-bottom: 0; background: #0b0b0b;
+    box-shadow: 0 24px 60px -24px rgb(0 0 0 / 0.7);
+    transition: transform 0.8s var(--ease);
+  }
+  .chrome { display: flex; align-items: center; gap: 12px; height: 24px; padding: 0 10px; background: #1e1e1e; border-bottom: 1px solid #2a2a2a; }
+  .dots { display: flex; gap: 5px; }
+  .dots i { width: 7px; height: 7px; border-radius: 50%; background: #3a3a3a; }
+  .url { flex: 1; max-width: 220px; margin-inline: auto; padding: 2px 10px; border-radius: 5px; background: #2a2a2a; color: #b4b3aa; font-size: 10px; text-align: center; }
+  .browser :global(img) { width: 100%; height: auto; }
+  .phone {
+    position: absolute; right: clamp(10px, 2.5vw, 28px); bottom: -10%; width: 21%;
+    border-radius: 18px; border: 4px solid #0b0b0b; outline: 1px solid var(--border-strong); overflow: hidden; background: #0b0b0b;
+    box-shadow: 0 24px 50px -16px rgb(0 0 0 / 0.75);
+    transition: transform 0.8s var(--ease);
+  }
+  .phone :global(img) { width: 100%; height: auto; border-radius: 14px; }
+  .project:hover .browser { transform: translateY(-5px); }
+  .project:hover .phone { transform: translateY(-10px); }
+
+  .info { display: grid; gap: 14px; }
+  .meta { display: flex; align-items: center; gap: 12px; font-size: 13px; color: var(--muted); }
+  .status { padding: 4px 10px; border-radius: 999px; font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; }
+  .s-em-desenvolvimento { color: var(--accent-text); background: var(--accent-soft); }
+  .s-concluido { color: var(--text); background: var(--surface-2); }
+  h3 { font-size: clamp(22px, 1.1rem + 0.8vw, 26px); font-weight: 600; letter-spacing: -0.03em; line-height: 1.2; }
+  .sub { font-weight: 400; color: var(--muted); }
+  .desc { color: var(--muted); line-height: 1.75; font-size: 15px; }
+
+  .more summary {
+    display: inline-flex; align-items: center; gap: 6px; cursor: pointer; list-style: none;
+    font-size: 13px; font-weight: 600; color: var(--accent-text);
+  }
+  .more summary::-webkit-details-marker { display: none; }
+  .more summary :global(svg) { transition: transform 0.3s var(--ease); }
+  .more[open] summary :global(svg) { transform: rotate(180deg); }
+  .points { list-style: none; padding: 12px 0 0; display: grid; gap: 8px; }
+  .points li { position: relative; padding-left: 18px; color: var(--muted); font-size: 14px; line-height: 1.65; }
+  .points li::before { content: ''; position: absolute; left: 0; top: 0.8em; width: 8px; height: 1px; background: var(--accent-text); }
+  .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 4px; }
+
+  @media (max-width: 900px) {
+    .list { grid-template-columns: minmax(0, 1fr); gap: 56px; }
+  }
+</style>
