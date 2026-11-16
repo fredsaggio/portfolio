@@ -9,7 +9,6 @@ export const profile: Profile = {
   intro:
     'Costruisco sistemi completi, dal database all’interfaccia: API scalabili in Go e Python, modellazione dei dati con PostgreSQL e interfacce in React e TypeScript. Attualmente sto approfondendo gli AI Agents applicati a problemi reali, oltre a occuparmi di infrastruttura cloud, container e pipeline CI/CD.',
   about: [
-    "Fin da bambino ho sempre amato la tecnologia, quindi non ho mai pensato di seguire una strada diversa per la mia carriera.",
     "Durante il mio percorso in Informatica ho avuto l’opportunità di partecipare a eventi che hanno dato molto alla mia carriera e alla mia crescita professionale. Ho svolto stage che mi hanno dato esperienza pratica nel settore, affrontando i problemi di tutti i giorni.",
   ],
   photoNote: 'Studente di Informatica presso UNIMA',
@@ -32,7 +31,7 @@ export const profile: Profile = {
     },
     {
       title: 'Ingegneria e qualità',
-      items: ['SOLID', 'Clean Code', 'Clean Architecture', 'Domain-Driven Design'],
+      items: ['Principi SOLID', 'Design Pattern', 'Domain-Driven Design'],
     },
     {
       title: 'IA applicata',

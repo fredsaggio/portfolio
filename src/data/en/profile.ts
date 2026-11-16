@@ -9,7 +9,6 @@ export const profile: Profile = {
   intro:
     'I build complete systems, from the database to the interface: scalable APIs in Go and Python, data modeling with PostgreSQL and interfaces in React and TypeScript. I am currently going deeper into AI Agents applied to real-world problems, while also taking care of cloud infrastructure, containers and CI/CD pipelines.',
   about: [
-    "I have loved technology since I was a kid, so I never thought about following a different path for my career.",
     "Throughout my journey in Computer Science, I have had the chance to take part in events that added a lot to my career and to who I am as a professional. I have also done internships that gave me hands-on experience in the field, dealing with real day-to-day problems.",
   ],
   photoNote: 'Computer Science student at UNIMA',
@@ -32,7 +31,7 @@ export const profile: Profile = {
     },
     {
       title: 'Engineering and quality',
-      items: ['SOLID', 'Clean Code', 'Clean Architecture', 'Domain-Driven Design'],
+      items: ['SOLID principles', 'Design Patterns', 'Domain-Driven Design'],
     },
     {
       title: 'Applied AI',

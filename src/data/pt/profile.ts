@@ -11,7 +11,6 @@ export const profile: Profile = {
   intro:
     'Construo sistemas completos, do banco de dados à interface: APIs escaláveis em Go e Python, modelagem de dados com PostgreSQL e interfaces em React e TypeScript. Hoje venho me aprofundando em AI Agents aplicados a problemas reais, além de cuidar de infraestrutura em nuvem, containers e pipelines de CI/CD.',
   about: [
-    "Desde criança sempre gostei de tecnologia, então não pensei em seguir algo diferente para minha carreira.",
     "Durante minha trajetória em Ciência da Computação, tive a oportunidade de participar de eventos que agregaram muito para minha carreira e como profissional também. Realizei estágios que me proporcionaram experiência prática na área, além de lidar com problemas do dia a dia.",
   ],
   photoNote: 'Graduando em Ciência da Computação pela UNIMA',
@@ -40,7 +39,7 @@ export const profile: Profile = {
     },
     {
       title: 'Engenharia e qualidade',
-      items: ['SOLID', 'Clean Code', 'Clean Architecture', 'Domain-Driven Design'],
+      items: ['Princípios SOLID', 'Design Patterns', 'Domain-Driven Design'],
     },
     {
       title: 'IA aplicada',
