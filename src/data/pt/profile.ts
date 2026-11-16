@@ -11,7 +11,7 @@ export const profile: Profile = {
   intro:
     'Construo sistemas completos, do banco de dados à interface: APIs escaláveis em Go e Python, modelagem de dados com PostgreSQL e interfaces em React e TypeScript. Hoje venho me aprofundando em AI Agents aplicados a problemas reais, além de cuidar de infraestrutura em nuvem, containers e pipelines de CI/CD.',
   about: [
-    "Durante minha trajetória em Ciência da Computação, tive a oportunidade de participar de eventos que agregaram muito para minha carreira e como profissional também. Realizei estágios que me proporcionaram experiência prática na área, além de lidar com problemas do dia a dia.",
+    "Durante minha trajetória em Ciência da Computação, participei de eventos que agregaram muito à minha formação e realizei estágios que me proporcionaram experiência prática na resolução de problemas reais.",
   ],
   photoNote: 'Graduando em Ciência da Computação pela UNIMA',
   email: 'saggiofrederico@gmail.com',
@@ -27,7 +27,7 @@ export const profile: Profile = {
     },
     {
       title: 'Dados e mensageria',
-      items: ['PostgreSQL', 'SQLAlchemy', 'Alembic', 'Redis', 'RabbitMQ'],
+      items: ['PostgreSQL', 'Redis', 'RabbitMQ'],
     },
     {
       title: 'Frontend',

@@ -19,7 +19,7 @@ export const profile: Profile = {
     },
     {
       title: 'Data and messaging',
-      items: ['PostgreSQL', 'SQLAlchemy', 'Alembic', 'Redis', 'RabbitMQ'],
+      items: ['PostgreSQL', 'Redis', 'RabbitMQ'],
     },
     {
       title: 'Frontend',
