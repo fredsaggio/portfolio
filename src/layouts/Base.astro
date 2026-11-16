@@ -26,7 +26,11 @@ const t = useTranslations(lang);
     <script is:inline>
       // Tema escuro por padrão; a escolha do visitante fica salva neste navegador.
       try { if (localStorage.getItem('theme') === 'light') document.documentElement.dataset.theme = 'light'; } catch (e) {}
-      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('js-motion');
+      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        document.documentElement.classList.add('js-motion');
+        // garantia da animação de abertura: se o script não rodar, o texto aparece mesmo assim
+        setTimeout(function () { document.documentElement.classList.add('hero-done'); }, 5000);
+      }
     </script>
   </head>
   <body>

@@ -9,11 +9,12 @@ highlights:
   - CI/CD on GitHub Actions with unit and integration tests; the API ships to Render and the dashboard to Vercel only after everything passes.
 image: ../../../assets/projects/bondrota-desktop.png
 mobileImage: ../../../assets/projects/bondrota-mobile.png
-imageAlt: BondRota admin dashboard with trip, booking and fleet indicators, and the mobile login screen with a bus illustration.
+imageAlt: "BondRota admin dashboard with trip, shift booking and fleet indicators, and the mobile monitoring screen with the map of a trip in progress."
 year: 2025
 status: em-desenvolvimento
 order: 2
-stack: [Go, PostgreSQL, Next.js, React, TypeScript, Docker, Supabase, OSRM, Playwright]
+privateSite: true
+stack: [Go, PostgreSQL, React, TypeScript, Docker]
 links:
   repo: https://github.com/fredsaggio/bondrota-api
 ---

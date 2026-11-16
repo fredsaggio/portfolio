@@ -9,11 +9,12 @@ highlights:
   - CI/CD su GitHub Actions con test unitari e di integrazione; l'API va su Render e la dashboard su Vercel solo dopo che tutto è passato.
 image: ../../../assets/projects/bondrota-desktop.png
 mobileImage: ../../../assets/projects/bondrota-mobile.png
-imageAlt: Dashboard amministrativa di BondRota con gli indicatori di viaggi, prenotazioni e flotta, e la schermata di login su mobile con l'illustrazione di un autobus.
+imageAlt: "Dashboard amministrativa di BondRota con indicatori di viaggi, prenotazioni per turno e flotta, e la schermata di monitoraggio su mobile con la mappa di un viaggio in corso."
 year: 2025
 status: em-desenvolvimento
 order: 2
-stack: [Go, PostgreSQL, Next.js, React, TypeScript, Docker, Supabase, OSRM, Playwright]
+privateSite: true
+stack: [Go, PostgreSQL, React, TypeScript, Docker]
 links:
   repo: https://github.com/fredsaggio/bondrota-api
 ---

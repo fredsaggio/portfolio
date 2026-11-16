@@ -32,15 +32,9 @@ Salve a foto em `src/assets/journey/` e crie um arquivo em cada idioma, por exem
 
 ```md
 ---
-title: "Título do momento"
-meta: "Organização · mês/ano"
-text: "Um parágrafo curto contando o que aconteceu e o que você fez."
+title: "Legenda curta, ex.: 2º lugar no Hackathon X"
 image: ../../../assets/journey/nome.jpg
 imageAlt: "Descrição da foto."
-tags: [Go, PostgreSQL]
-link:                      # opcional
-  label: "Ver projeto"
-  url: https://...
 order: 2                   # menor aparece primeiro
 ---
 ```
@@ -74,7 +68,7 @@ links:
 
 ### Currículo
 
-Coloque o PDF em `public/` e preencha `cvUrl` em `profile.ts`. O botão do topo passa de "Fale comigo" para "Baixar currículo".
+O PDF fica em `public/frederico-saggio-cv.pdf` e aparece no botão "Currículo" do topo e no menu do celular. Para atualizar, substitua o arquivo mantendo o mesmo nome. Para tirar o botão, apague `cvUrl` em `src/data/pt/profile.ts`.
 
 ## Idiomas (PT, EN, IT)
 

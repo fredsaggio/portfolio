@@ -7,11 +7,6 @@ export interface Profile {
   title: string;
   /** Tecnologias em destaque na hero. */
   heroStack: string[];
-  /** Texto do item "Foco" na faixa de informações da hero. */
-  focus: string;
-  location: string;
-  /** Texto do indicador verde no topo da hero. */
-  status: string;
   intro: string;
   /** Parágrafos da seção Sobre mim. */
   about: string[];
@@ -22,7 +17,7 @@ export interface Profile {
   /** PDF em public/, ex.: '/frederico-saggio-cv.pdf'. Sem valor, o botão vira "Fale comigo". */
   cvUrl?: string;
   /** Skills agrupadas por área. Cada grupo vira um card na seção Skills. */
-  skillGroups: { title: string; text: string; items: string[] }[];
+  skillGroups: { title: string; items: string[] }[];
   languages: { name: string; level: string }[];
   services: { title: string; text: string }[];
 }

@@ -12,14 +12,10 @@ const journey = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/journey' }),
   schema: ({ image }) =>
     z.object({
+      /** Legenda curta que aparece embaixo da foto. */
       title: z.string(),
-      /** Linha pequena acima do título, ex.: organização e data. */
-      meta: z.string(),
-      text: z.string(),
       image: image(),
       imageAlt: z.string(),
-      tags: z.array(z.string()).default([]),
-      link: z.object({ label: z.string(), url: z.url() }).optional(),
       /** Menor número aparece primeiro. */
       order: z.number().default(99),
     }),
@@ -48,6 +44,8 @@ const projects = defineCollection({
       links: z
         .object({ site: z.url().optional(), repo: z.url().optional() })
         .default({}),
+      /** Mostra um botão desativado "Site privado" quando o sistema não é aberto ao público. */
+      privateSite: z.boolean().default(false),
       /** Menor número aparece primeiro. */
       order: z.number().default(99),
     }),

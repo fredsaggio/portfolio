@@ -16,14 +16,12 @@ const items = [
   { href: '#skills', label: t('nav.skills') },
   { href: '#contato', label: t('nav.contact') },
 ];
-const cta = p.cvUrl
-  ? { href: p.cvUrl, label: t('nav.cv'), icon: 'download' as const, download: true }
-  : { href: '#contato', label: t('nav.talk'), icon: 'arrow-up-right' as const, download: false };
+const cvFile = 'Frederico-Saggio-CV.pdf';
 ---
 
 <header class="header">
   <div class="shell bar">
-    <a class="logo" href="#inicio" aria-label={`${p.name}, ${t('logo.label')}`}><span class="br" aria-hidden="true">&lt;&gt;</span>{p.logo}</a>
+    <a class="logo" href="#inicio" aria-label={`${p.name}, ${t('logo.label')}`}><span class="br" aria-hidden="true">&lt;&gt;</span><span>{p.logo}<span class="tld">.dev</span></span></a>
 
     <nav class="nav" aria-label={t('nav.title')}>
       <ul>{items.map((it) => <li><a href={it.href} data-nav={it.href.slice(1)}>{it.label}</a></li>)}</ul>
@@ -34,8 +32,13 @@ const cta = p.cvUrl
         <Icon name="sun" class="i-sun" /><Icon name="moon" class="i-moon" />
       </button>
       <LangSwitch lang={lang} />
-      <a class="cta" href={cta.href} download={cta.download || undefined}>
-        <Icon name={cta.icon} size={16} /><span class="cta-label">{cta.label}</span>
+      {p.cvUrl && (
+        <a class="cv" href={p.cvUrl} download={cvFile} aria-label={t('nav.cv')}>
+          <Icon name="download" size={16} /><span>{t('nav.cvShort')}</span>
+        </a>
+      )}
+      <a class="cta" href="#contato">
+        <Icon name="arrow-up-right" size={16} /><span class="cta-label">{t('nav.talk')}</span>
       </a>
       <button class="circle menu-open" type="button" aria-label={t('nav.menu')} aria-haspopup="dialog">
         <Icon name="menu" />
@@ -55,6 +58,9 @@ const cta = p.cvUrl
         <li><a href={it.href}><span class="n">{String(i + 1).padStart(2, '0')}</span>{it.label}</a></li>
       ))}
     </ul>
+    {p.cvUrl && (
+      <a class="sheet-cv" href={p.cvUrl} download={cvFile}><Icon name="download" size={18} />{t('nav.cv')}</a>
+    )}
     <div class="sheet-foot">
       <a href={p.links.linkedin} target="_blank" rel="noopener">LinkedIn <Icon name="arrow-up-right" size={14} /></a>
       <a href={p.links.github} target="_blank" rel="noopener">GitHub <Icon name="arrow-up-right" size={14} /></a>
@@ -72,10 +78,11 @@ const cta = p.cvUrl
   }
   .bar { display: flex; align-items: center; justify-content: space-between; gap: 16px; height: 80px; }
   .logo { display: inline-flex; align-items: center; gap: 8px; font-size: 22px; font-weight: 600; letter-spacing: -0.04em; text-decoration: none; }
+  .tld { color: var(--muted); font-weight: 500; }
   .br { color: var(--accent-text); font-weight: 700; letter-spacing: 0.02em; transition: transform 0.4s var(--ease); }
   .logo:hover .br { transform: rotate(-8deg); }
 
-  .nav { position: absolute; left: 50%; transform: translateX(-50%); }
+  .nav { flex: 1; display: flex; justify-content: center; }
   .nav ul { display: flex; gap: 28px; list-style: none; padding: 0; }
   .nav a { font-size: 14px; font-weight: 500; color: var(--muted); text-decoration: none; transition: color 0.2s; position: relative; }
   .nav a:hover, .nav a.is-active { color: var(--text); }
@@ -97,15 +104,23 @@ const cta = p.cvUrl
     font-size: 12px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; transition: transform 0.3s var(--ease);
   }
   .cta:hover { transform: translateY(-1px); }
+  .cv {
+    display: inline-flex; align-items: center; gap: 8px; height: 44px; padding: 0 16px; border-radius: 999px;
+    background: var(--surface-2); border: 1px solid var(--border-strong); color: var(--text); text-decoration: none;
+    font-size: 12px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; transition: border-color 0.2s;
+  }
+  .cv:hover { border-color: var(--accent-text); }
+  .cv :global(svg) { color: var(--accent-text); }
   .menu-open { display: none; }
 
-  @media (max-width: 1000px) {
+  @media (max-width: 1180px) {
     .nav { display: none; }
     .menu-open { display: grid; }
   }
   @media (max-width: 560px) {
     .cta { width: 44px; padding: 0; justify-content: center; }
     .cta-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+    .cv { display: none; }
     .bar { height: 72px; }
   }
 
@@ -129,6 +144,10 @@ const cta = p.cvUrl
     font-size: 30px; font-weight: 400; letter-spacing: -0.03em; text-decoration: none;
   }
   .sheet-links .n { font-size: 12px; color: var(--accent-text); letter-spacing: 0; }
+  .sheet-cv {
+    display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 20px; padding: 14px; border-radius: 999px;
+    background: var(--accent); color: var(--on-accent); font-weight: 600; text-decoration: none;
+  }
   .sheet-foot { display: flex; gap: 20px; }
   .sheet-foot a { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; color: var(--muted); text-decoration: none; }
 </style>

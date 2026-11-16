@@ -1,7 +1,7 @@
 /*
   Estilo editorial escuro: neutros quentes, tipografia grande e um único acento.
   Para trocar a cor de destaque, mude só o bloco "acento" abaixo (e o do tema claro).
-  Contraste (WCAG): texto 16.3:1, texto secundário 8.8:1, laranja 7.9:1 sobre o fundo escuro.
+  Contraste (WCAG): texto 16.3:1, texto secundário 8.8:1, acento 8.7:1 sobre o fundo escuro.
 */
 :root {
   /* fundo mais escuro (teste). Valores anteriores: bg #141414, surface #1b1b1b,
@@ -16,11 +16,13 @@
   --muted: #b4b3aa;
   --subtle: #a5a49b;
   /* acento */
-  --accent-rgb: 255 138 61;               /* #ff8a3d */
+  /* acento em teste: verde puro. Laranja anterior: --accent-rgb 255 138 61 (#ff8a3d), hover #ffa366,
+     tema claro #a84a0c / rgb(168 74 12 / 0.08) */
+  --accent-rgb: 34 197 94;                /* #22c55e */
   --accent: rgb(var(--accent-rgb));       /* preenchimento de botões e destaques */
-  --accent-hover: #ffa366;
+  --accent-hover: #4ade80;
   --accent-text: rgb(var(--accent-rgb));  /* acento usado como cor de texto */
-  --on-accent: #141414;                   /* texto sobre o acento: 7.9:1 */
+  --on-accent: #141414;                   /* texto sobre o acento: 8.1:1 */
   --accent-soft: rgb(var(--accent-rgb) / 0.1);
 
   --f-sans: 'Plus Jakarta Sans Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
@@ -39,8 +41,8 @@
   --text: #141414;
   --muted: #55544d;         /* 6.7:1 */
   --subtle: #66655d;
-  --accent-text: #a84a0c;   /* 5.1:1 */
-  --accent-soft: rgb(168 74 12 / 0.08);
+  --accent-text: #157a36;   /* 4.9:1 */
+  --accent-soft: rgb(21 122 54 / 0.08);
   color-scheme: light;
 }
 
@@ -54,6 +56,8 @@ body {
   transition: background-color 0.3s, color 0.3s;
 }
 img, svg { display: block; max-width: 100%; }
+/* o atributo hidden sempre esconde, mesmo em elementos com display próprio (ex.: slides do carrossel) */
+[hidden] { display: none !important; }
 h1, h2, h3, h4, p, ul, ol, figure { margin: 0; }
 h1, h2, h3 { text-wrap: balance; }
 p { text-wrap: pretty; }
@@ -118,11 +122,22 @@ button { font: inherit; color: inherit; }
 
 /* ---------- entrada ao rolar (só com JS e sem movimento reduzido) ---------- */
 .js-motion [data-reveal] {
-  opacity: 0; transform: translateY(24px);
-  transition: opacity 0.9s var(--ease), transform 0.9s var(--ease);
-  transition-delay: calc(var(--i, 0) * 80ms);
+  opacity: 0; translate: 0 56px; scale: 0.98; filter: blur(4px);
+  transition: opacity 0.9s var(--ease), translate 1.1s var(--ease), scale 1.1s var(--ease), filter 0.9s var(--ease);
+  transition-delay: calc(var(--i, 0) * 110ms);
 }
-.js-motion [data-reveal].is-in { opacity: 1; transform: none; }
+.js-motion [data-reveal].is-in { opacity: 1; translate: 0 0; scale: 1; filter: none; }
+
+/* títulos de seção: etiqueta, título e subtítulo entram em sequência */
+.js-motion .section-head[data-reveal] { opacity: 1; translate: none; scale: none; filter: none; }
+.js-motion .section-head[data-reveal] > * {
+  opacity: 0; translate: 0 36px;
+  transition: opacity 0.8s var(--ease), translate 1s var(--ease);
+}
+.js-motion .section-head[data-reveal] > :nth-child(2) { transition-delay: 0.1s; }
+.js-motion .section-head[data-reveal] > :nth-child(3) { transition-delay: 0.2s; }
+.js-motion .section-head[data-reveal] > :nth-child(4) { transition-delay: 0.3s; }
+.js-motion .section-head[data-reveal].is-in > * { opacity: 1; translate: 0 0; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }

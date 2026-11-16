@@ -12,7 +12,7 @@ const year = new Date().getFullYear();
 
 <footer class="footer">
   <div class="shell row">
-    <a class="logo" href="#inicio"><span class="br" aria-hidden="true">&lt;&gt;</span>{p.logo}</a>
+    <a class="logo" href="#inicio"><span class="br" aria-hidden="true">&lt;&gt;</span><span>{p.logo}<span class="tld">.dev</span></span></a>
     <p>© {year} {p.name}. {t('footer.rights')}</p>
   </div>
 </footer>
@@ -23,6 +23,7 @@ const year = new Date().getFullYear();
   .footer { border-top: 1px solid var(--border); padding-block: 28px calc(28px + env(safe-area-inset-bottom, 0px)); }
   .row { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; }
   .logo { display: inline-flex; align-items: center; gap: 6px; font-size: 18px; font-weight: 600; letter-spacing: -0.04em; text-decoration: none; }
+  .tld { color: var(--muted); font-weight: 500; }
   .br { color: var(--accent-text); font-weight: 700; letter-spacing: 0.02em; }
   .row p { font-size: 12px; color: var(--subtle); }
   @media (max-width: 640px) { .row { padding-right: 72px; } }

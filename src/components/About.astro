@@ -47,13 +47,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
                 <figure class="photo">
                   <Picture src={d.image} formats={['avif', 'webp']} widths={[480, 720, 960, 1280]} sizes="(min-width: 1024px) 680px, 92vw" quality={85} alt={d.imageAlt} loading="lazy" />
                 </figure>
-                <div class="body" aria-live="polite">
-                  <p class="meta">{d.meta}</p>
-                  <h4>{d.title}</h4>
-                  <p class="desc">{d.text}</p>
-                  {d.tags.length > 0 && <ul class="tags">{d.tags.map((tg) => <li class="tag">{tg}</li>)}</ul>}
-                  {d.link && <a class="text-link" href={d.link.url} target="_blank" rel="noopener">{d.link.label}<Icon name="arrow-up-right" /></a>}
-                </div>
+                <p class="caption" aria-live="polite">{d.title}</p>
               </li>
             );
           })}
@@ -90,10 +84,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
   @keyframes slideIn { from { opacity: 0; transform: translateX(var(--dir, 24px)); } }
   .photo { aspect-ratio: 3 / 2; overflow: hidden; background: var(--surface-2); touch-action: pan-y; }
   .photo :global(img) { width: 100%; height: 100%; object-fit: cover; }
-  .body { display: grid; gap: 12px; padding: 22px 22px 26px; justify-items: start; }
-  .meta { font-size: 12px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--subtle); }
-  h4 { margin: 0; font-size: clamp(20px, 1.05rem + 0.6vw, 24px); font-weight: 600; letter-spacing: -0.02em; line-height: 1.25; }
-  .desc { color: var(--muted); font-size: 15px; line-height: 1.75; }
+  .caption { padding: 14px 20px 16px; font-size: 14px; font-weight: 500; color: var(--muted); }
 
   @media (max-width: 960px) { .grid { grid-template-columns: minmax(0, 1fr); } }
 </style>

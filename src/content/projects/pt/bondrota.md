@@ -9,11 +9,12 @@ highlights:
   - CI/CD no GitHub Actions com testes unitários e de integração; a API sobe no Render e o painel na Vercel só depois que tudo passa.
 image: ../../../assets/projects/bondrota-desktop.png
 mobileImage: ../../../assets/projects/bondrota-mobile.png
-imageAlt: Painel administrativo do BondRota com os indicadores de viagens, reservas e frota, e a tela de login no celular com a ilustração de um ônibus.
+imageAlt: "Painel administrativo do BondRota com indicadores de viagens, reservas por turno e frota, e a tela de monitoramento no celular com o mapa de uma viagem em andamento."
 year: 2025
 status: em-desenvolvimento
 order: 2
-stack: [Go, PostgreSQL, Next.js, React, TypeScript, Docker, Supabase, OSRM, Playwright]
+privateSite: true
+stack: [Go, PostgreSQL, React, TypeScript, Docker]
 links:
   repo: https://github.com/fredsaggio/bondrota-api
 ---

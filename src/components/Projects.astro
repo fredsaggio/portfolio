@@ -23,10 +23,10 @@ const count = `${projects.length} ${projects.length === 1 ? t('proj.count.one') 
   </div>
 
   <div class="list">
-    {projects.map((p) => {
+    {projects.map((p, i) => {
       const d = p.data;
       return (
-        <article class="project" data-reveal>
+        <article class="project" data-reveal style={`--i:${i % 2}`}>
           <div class="stage">
             <div class="browser">
               <div class="chrome">
@@ -58,6 +58,7 @@ const count = `${projects.length} ${projects.length === 1 ? t('proj.count.one') 
             <ul class="tags">{d.stack.map((s) => <li class="tag">{s}</li>)}</ul>
             <div class="actions">
               {d.links.site && <a class="btn btn-accent btn-sm" href={d.links.site} target="_blank" rel="noopener"><Icon name="arrow-up-right" size={16} class="diag" />{t('proj.site')}</a>}
+              {d.privateSite && <span class="btn btn-ghost btn-sm is-private" aria-disabled="true" title={t('proj.privateHint')}><Icon name="lock" size={16} />{t('proj.private')}</span>}
               {d.links.repo && <a class="btn btn-ghost btn-sm" href={d.links.repo} target="_blank" rel="noopener"><Icon name="github" size={16} />{t('proj.repo')}</a>}
             </div>
           </div>
@@ -98,6 +99,13 @@ const count = `${projects.length} ${projects.length === 1 ? t('proj.count.one') 
     transition: transform 0.8s var(--ease);
   }
   .phone :global(img) { width: 100%; height: auto; border-radius: 14px; }
+  /* entrada: o palco se abre de baixo para cima e os prints sobem em tempos diferentes */
+  :global(.js-motion) .stage { clip-path: inset(22% 0 0 0 round 14px); transition: clip-path 1.2s var(--ease) 0.1s; }
+  :global(.js-motion) .browser { translate: 0 70px; transition: transform 0.8s var(--ease), translate 1.3s var(--ease) 0.2s; }
+  :global(.js-motion) .phone { translate: 0 140px; rotate: 6deg; transition: transform 0.8s var(--ease), translate 1.4s var(--ease) 0.45s, rotate 1.4s var(--ease) 0.45s; }
+  :global(.js-motion) .project:global(.is-in) .stage { clip-path: inset(0 0 0 0 round 14px); }
+  :global(.js-motion) .project:global(.is-in) .browser,
+  :global(.js-motion) .project:global(.is-in) .phone { translate: 0 0; rotate: 0deg; }
   .project:hover .browser { transform: translateY(-5px); }
   .project:hover .phone { transform: translateY(-10px); }
 
@@ -121,6 +129,8 @@ const count = `${projects.length} ${projects.length === 1 ? t('proj.count.one') 
   .points li { position: relative; padding-left: 18px; color: var(--muted); font-size: 14px; line-height: 1.65; }
   .points li::before { content: ''; position: absolute; left: 0; top: 0.8em; width: 8px; height: 1px; background: var(--accent-text); }
   .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 4px; }
+  .is-private { cursor: not-allowed; color: var(--subtle); border-style: dashed; }
+  .is-private:hover { border-color: var(--border-strong); }
 
   @media (max-width: 900px) {
     .list { grid-template-columns: minmax(0, 1fr); gap: 56px; }
