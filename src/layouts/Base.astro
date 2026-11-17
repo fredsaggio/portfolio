@@ -1,6 +1,7 @@
 ---
 import '@fontsource-variable/plus-jakarta-sans';
 import '../styles/global.css';
+import Cursor from '../components/Cursor.astro';
 import type { Lang } from '../i18n/ui';
 import { useTranslations, languages, homePath } from '../i18n/ui';
 
@@ -36,6 +37,7 @@ const t = useTranslations(lang);
   <body>
     <a class="skip-link" href="#conteudo">{t('skip')}</a>
     <slot />
+    <Cursor />
     <script>
       import '../scripts/motion';
     </script>

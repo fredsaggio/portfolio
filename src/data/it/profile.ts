@@ -35,7 +35,7 @@ export const profile: Profile = {
     },
     {
       title: 'IA applicata',
-      items: ['LangChain', 'AI Agents', 'SerpAPI'],
+      items: ['LangChain', 'AI Agents', 'SerpAPI', 'Graphify'],
     },
   ],
   languages: [
@@ -48,5 +48,24 @@ export const profile: Profile = {
     { title: 'API e backend', text: 'API RESTful in Go e Python, con regole di business ben definite, testate e facili da mantenere.' },
     { title: 'Dati e infrastruttura', text: 'Modellazione dei dati SQL, cache con Redis, code con RabbitMQ, container Docker, CI/CD e reverse proxy con Caddy.' },
     { title: 'AI Agents', text: 'Integrazione di agenti con LangChain e automazione della raccolta e dell’audit dei dati.' },
+  ],
+  experience: [
+    {
+      company: 'MSPA',
+      role: 'Sviluppatore Backend · Tirocinio',
+      period: 'Feb 2026 – Ago 2026',
+      place: 'Maceió · Ibrido',
+      text: 'Ho lavorato al backend di Compass, in Go e PostgreSQL: endpoint per i requisiti della LGPD, isolamento dei dati di ogni cliente (multi-tenant), automazione degli audit con agenti di IA e test di integrazione.',
+      stack: ['Go', 'PostgreSQL', 'SpiceDB', 'Podman', 'SerpAPI'],
+    },
+    {
+      company: 'Propitank',
+      role: 'Ingegnere del Software · Tirocinio',
+      period: 'Set 2026 – Oggi',
+      place: 'Maceió · Ibrido',
+      text: 'Insieme a un altro sviluppatore ho creato da zero la piattaforma web che gestisce le stazioni: riceve i dati dei sensori e avvisa quando qualcosa non va. Abbiamo anche realizzato un agente di IA con un bot WhatsApp che velocizza il lavoro degli operatori, con tutto registrato sulla piattaforma.',
+      stack: ['Python', 'FastAPI', 'LangChain', 'React', 'TypeScript', 'Docker'],
+      current: true,
+    },
   ],
 };

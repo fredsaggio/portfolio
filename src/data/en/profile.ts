@@ -35,7 +35,7 @@ export const profile: Profile = {
     },
     {
       title: 'Applied AI',
-      items: ['LangChain', 'AI Agents', 'SerpAPI'],
+      items: ['LangChain', 'AI Agents', 'SerpAPI', 'Graphify'],
     },
   ],
   languages: [
@@ -48,5 +48,24 @@ export const profile: Profile = {
     { title: 'APIs and backend', text: 'RESTful APIs in Go and Python, with well-defined business rules that are tested and easy to maintain.' },
     { title: 'Data and infrastructure', text: 'SQL data modeling, Redis caching, RabbitMQ queues, Docker containers, CI/CD and a Caddy reverse proxy.' },
     { title: 'AI Agents', text: 'Agent integration with LangChain and automated data collection and auditing.' },
+  ],
+  experience: [
+    {
+      company: 'MSPA',
+      role: 'Backend Developer · Intern',
+      period: 'Feb 2026 – Aug 2026',
+      place: 'Maceió · Hybrid',
+      text: 'I worked on the Compass backend in Go and PostgreSQL: endpoints for LGPD requirements, isolating each client\'s data (multi-tenant), audit automation with AI agents and integration tests.',
+      stack: ['Go', 'PostgreSQL', 'SpiceDB', 'Podman', 'SerpAPI'],
+    },
+    {
+      company: 'Propitank',
+      role: 'Software Engineer · Intern',
+      period: 'Sep 2026 – Present',
+      place: 'Maceió · Hybrid',
+      text: 'Together with another developer, I built from scratch the web platform that manages the stations: it receives sensor data and raises an alert when something goes wrong. We also built an AI agent with a WhatsApp bot that speeds up the operators\' work, with everything recorded on the platform.',
+      stack: ['Python', 'FastAPI', 'LangChain', 'React', 'TypeScript', 'Docker'],
+      current: true,
+    },
   ],
 };

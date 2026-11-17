@@ -74,6 +74,8 @@ const last = rest.join(' ');
   /* depois que o script assume, só ele decide quais letras aparecem (o nome é apagado e redigitado em loop) */
   :global(.js-motion) .hero[data-typing] .ch:not(.on) { visibility: hidden; }
   :global(.js-motion:not(.hero-done)) .hero:not(.typed) [data-hold] { opacity: 0 !important; translate: 0 40px !important; filter: blur(4px) !important; }
+  /* entrada da hero mais curta que a das outras seções: quem chega no site vê o cargo e o texto em menos de 1 s */
+  :global(.js-motion) .hero [data-hold] { transition-duration: 0.6s; transition-delay: calc((var(--i, 3) - 3) * 70ms); }
   .ch.cur::after {
     content: ''; position: absolute; right: -0.14em; bottom: 0.1em; width: 0.07em; height: 0.8em;
     background: var(--accent-text); animation: blink 0.9s steps(1) infinite;
@@ -99,19 +101,13 @@ const last = rest.join(' ');
   .photo { position: relative; aspect-ratio: 4 / 5; overflow: hidden; border-radius: 40px; background: var(--surface-2); }
   .photo :global(img) { width: 100%; height: 100%; object-fit: cover; object-position: center 20%; transition: transform 1.2s var(--ease); }
   .portrait:hover .photo :global(img) { transform: scale(1.02); }
-  .note {
-    position: relative; margin: -36px 0 0 auto; margin-right: -20px; max-width: 80%; width: fit-content; padding: 20px; display: grid; gap: 14px;
-    border: 1px solid var(--border-strong); background: var(--bg); font-size: 14px; line-height: 1.6;
-  }
-  .note :global(svg) { color: var(--accent-text); }
+  .note { margin-top: 20px; display: flex; align-items: center; gap: 10px; font-size: 14px; line-height: 1.6; color: var(--muted); }
+  .note :global(svg) { color: var(--accent-text); flex: none; }
 
 
   @media (max-width: 1023px) {
     .grid { grid-template-columns: 1fr; }
     .portrait { margin-top: 8px; }
-  }
-  @media (max-width: 560px) {
-    .note { margin-right: 12px; }
   }
 </style>
 
@@ -140,9 +136,10 @@ const last = rest.join(' ');
     };
 
     (async () => {
+      // o resto da hero (cargo, texto, botões) entra logo, enquanto o nome ainda é digitado
+      setTimeout(() => hero.classList.add('typed'), 250);
       await wait(400);
       await type();
-      hero.classList.add('typed'); // libera o resto da abertura na primeira vez
       for (;;) {
         await wait(5000);
         await erase();

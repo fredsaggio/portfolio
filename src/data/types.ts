@@ -20,4 +20,6 @@ export interface Profile {
   skillGroups: { title: string; items: string[] }[];
   languages: { name: string; level: string }[];
   services: { title: string; text: string }[];
+  /** Empresas, da mais antiga para a atual. A última com `current` ganha a bolinha acesa na linha do tempo. */
+  experience: { company: string; role: string; period: string; place: string; text: string; stack: string[]; current?: boolean }[];
 }
