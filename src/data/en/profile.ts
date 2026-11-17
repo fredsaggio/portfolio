@@ -46,7 +46,6 @@ export const profile: Profile = {
   services: [
     { title: 'End-to-end systems', text: 'From the data model to the interface and deployment: API, database, front end and infrastructure of the same product.' },
     { title: 'APIs and backend', text: 'RESTful APIs in Go and Python, with well-defined business rules that are tested and easy to maintain.' },
-    { title: 'Web interfaces', text: 'React and TypeScript interfaces connected to the APIs, such as dashboards and data visualization screens.' },
     { title: 'Data and infrastructure', text: 'SQL data modeling, Redis caching, RabbitMQ queues, Docker containers, CI/CD and a Caddy reverse proxy.' },
     { title: 'AI Agents', text: 'Agent integration with LangChain and automated data collection and auditing.' },
   ],

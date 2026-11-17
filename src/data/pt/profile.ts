@@ -54,7 +54,6 @@ export const profile: Profile = {
   services: [
     { title: 'Sistemas completos', text: 'Do modelo de dados à interface e ao deploy: API, banco, front-end e infraestrutura de um mesmo produto.' },
     { title: 'APIs e backend', text: 'APIs RESTful em Go e Python, com regras de negócio bem definidas, testadas e fáceis de manter.' },
-    { title: 'Interfaces web', text: 'Interfaces em React e TypeScript conectadas às APIs, como painéis e telas de visualização de dados.' },
     { title: 'Dados e infraestrutura', text: 'Modelagem de dados SQL, cache com Redis, filas com RabbitMQ, containers Docker, CI/CD e proxy reverso com Caddy.' },
     { title: 'Agentes de IA', text: 'Integração de agentes com LangChain e automação de coleta e auditoria de dados.' },
   ],
